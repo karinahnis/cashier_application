@@ -2,31 +2,54 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Products;
+use App\Models\Category;
 use Illuminate\Http\Request;
-use App\Models\Product;
-use App\Model\Transaction;
 
 class ProductController extends Controller {
-    public function index() {
-        // Mengambil semua produk beserta transaksi terkait 
-        $product = Product::with('transaction')->get();
-
-        // Mengirim data ke view
-        return view('product.index', ['product' => $product]);
+    public function index(Request $request) {
+         $products = Product::with('category')->get();
+         return view('products.index', compact('products'));
     }
 
-    public function addProduct(Request $request) {
-        // validasi data
-        $validated = $ $request->validated([
-            'nama' => 'required|string|max:255',
-            'kategori' => 'required|string|max:255',
-            'stok_tersedia' => 'required|integer',
+    public function create() {
+        $categories = Category::all();
+        return view('products.create', compact('categories'));
+    }
+
+    public function store(Request $request) {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'price' => 'required|numeric|min:0',
+            'stock_available' => 'required|integer|min:0',
         ]);
 
-        // Simpan produk baru
-        Product::create($validated);
+        Product::create($validates);
 
-        return redirect()->route('product.index')->with('success', 'produk berhasil ditambahkan!');
+        return redirect()->route('products.index')->with('success', 'Product created successfully.');
+    }
+    
+    public function edit(Product $product) {
+        $categories = Category::all();
+        return view('products.edit', compact('product', 'categories'));
     }
 
+    public function update(Request $request, Product $product) {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'price' => 'required|numeric|min:0',
+            'stock_available' => 'required|integer|min:0',
+        ]);
+
+        $product->update($validated);
+        return redirect()->route('products.index')->with('success', 'Product update successfully.');
+    }
+
+    public function destroy(Product $product) {
+        $product->delete();
+
+        return redirect()->route('products.index')->with('success', 'Product delete successfully.');
+    }
 }
