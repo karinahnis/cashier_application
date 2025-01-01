@@ -1,12 +1,15 @@
 <?php
 
-namespace App\Models; 
-use illuminate\Database\Eloquent\Factories\HasFactory; 
-use Illuminate\Database\Eloquent\Model; 
-class users extends Model { 
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class User extends Model
+{
     use HasFactory;
 
-    // kolom yg  diisi
+    // kolom yg diisi
     protected $table = 'users';
 
     protected $fillable = [
@@ -15,8 +18,4 @@ class users extends Model {
     ];
 
     // Relasi dgn tabel user_roles
-    public function userRole()  {
-        return $this->belongsTo(UserRole::class, 'user_role_id');
-    }
 }
-

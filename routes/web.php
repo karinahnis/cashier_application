@@ -1,6 +1,8 @@
 <?php
 
-use App\Http\Controllers\LoginController; // Pastikan middleware terimport
+use App\Http\Middleware\EnsureUserIsAuthenticated;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LoginController; 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 
@@ -14,7 +16,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/products/{products}', [ProductController::class, 'destroy'])->name('products.destroy');
 });
 
-Route::post("/login", [LoginController::class, "authenticate"])->name("login");
+Route::get('/login', function () {
+    return view('auth.login'); 
+})->name('login.form');
+
+Route::post('/login', [AuthController::class, "login"])->name("login");
+
+
 
 
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');

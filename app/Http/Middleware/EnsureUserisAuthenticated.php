@@ -24,5 +24,7 @@ class EnsureUserisAuthenticated
 
         // Jika sudah login, lanjutkan proses ke middleware berikutnya atau controller
         return $next($request);
+
+                
     }
 }
