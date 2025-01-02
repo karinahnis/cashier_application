@@ -22,7 +22,7 @@
                         <td>{{ $product->price }}</td>
                         <td>{{ $product->stock_available }}</td>
                         <td>
-                            <a href="{{ route('product.edit', $product) }}" class="btn btn-warning">Edit</a>
+                            <a href="{{ route('products.edit', $product) }}" class="btn btn-warning">Edit</a>
                             <form action="{{ route('products.destroy', $product) }}" method="POST" style="display: inline;">
                                 @csrf 
                                 @method('DELETE')

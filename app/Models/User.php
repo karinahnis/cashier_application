@@ -3,19 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class User extends Model
+
+class User extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
-    // kolom yg diisi
-    protected $table = 'users';
+    protected $table = 'tb_user';
+    protected $primaryKey = 'user_id';
 
     protected $fillable = [
         'name',
-        'user_role_id',
+        'username',
+        'password',
     ];
-
-    // Relasi dgn tabel user_roles
 }

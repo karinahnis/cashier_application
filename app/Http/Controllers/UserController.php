@@ -4,42 +4,83 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
-class UserController extends Controller {
-    public function index() {
-        $user = User::with('userRole')->get();
-        return view('users.index', compact('user'));
+class UserController extends Controller
+{
+    public function register()
+    {
+        $data['title'] = 'Register';
+        return view('users/register', $data);
     }
 
-    public function create() {
-        return view('users.create');
-    }
-
-    public function store(Request $request) {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'user_role_id' => 'required|exists:user_roles,id',
+    public function register_action(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'username' => 'required|unique:tb_user',
+            'password' => 'required',
+            'password_confirm' => 'required|same:password',
         ]);
 
-        User::create($validated);
-
-        return redirect()->route('users.index')->with('success', 'User created successfully.');
-    }
-
-    public function update(Request $request, User $user) {
-        $validated = $request->validate([
-            'name' => 'required|string|max|255',
-            'user_role_id' => 'required|exists:user_role,id',
+        $user = new User([
+            'name' => $request->name,
+            'username' => $request->username,
+            'password' => Hash::make($request->password),
         ]);
+        $user->save();
 
-        $user->update($validated);
-
-        return redirect()->route('users.index')->with('success', 'User updated successfully.');
+        return redirect()->route('login')->with('success', 'Registration success. Please login!');
     }
 
-    public function destroy(User $user) {
-        $user->delete();
 
-        return redirect()->route('users.index')->with('success', 'User deleted successfully.');
+    public function login()
+    {
+        $data['title'] = 'Login';
+        return view('users/login', $data);
+    }
+
+    public function login_action(Request $request)
+    {
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+        if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
+            $request->session()->regenerate();
+            return redirect()->intended('/');
+        }
+
+        return back()->withErrors([
+            'password' => 'Wrong username or password',
+        ]);
+    }
+
+    public function password()
+    {
+        $data['title'] = 'Change Password';
+        return view('user/password', $data);
+    }
+
+    public function password_action(Request $request)
+    {
+        $request->validate([
+            'old_password' => 'required|current_password',
+            'new_password' => 'required|confirmed',
+        ]);
+        $user = User::find(Auth::id());
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+        $request->session()->regenerate();
+        return back()->with('success', 'Password changed!');
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
     }
 }

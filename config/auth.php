@@ -40,6 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'api' => [
+        'driver' => 'sanctum',
+        'provider' => 'users',
+        'has' => false,
+    ],
     ],
 
     /*
@@ -57,6 +62,7 @@ return [
     |
     | Supported: "database", "eloquent"
     |
+
     */
 
     'providers' => [
