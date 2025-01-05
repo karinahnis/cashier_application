@@ -11,6 +11,8 @@ Route::get('/', function () {
     return view('home', ['title' => 'Home']);
 })->name('home');
 
+Auth::routes();
+
 
 Route::get('register', [UserController::class, 'register'])->name('register');
 Route::post('register', [UserController::class, 'register_action'])->name('register.action');
@@ -20,12 +22,14 @@ Route::get('password', [UserController::class, 'password'])->name('password');
 Route::post('password', [UserController::class, 'password_action'])->name('password.action');
 Route::get('logout', [UserController::class, 'logout'])->name('logout');
 
+Route::group(['middleware' => ['auth']], function() {
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('products', [ProductController::class, 'store'])->name('products.store');
     Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
     Route::put('/products/{products}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{products}', [ProductController::class, 'destroy'])->name('products.destroy');
+});
 
 
-
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
