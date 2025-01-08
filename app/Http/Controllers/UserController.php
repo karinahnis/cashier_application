@@ -19,7 +19,7 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'username' => 'required|unique:tb_user',
+            'username' => 'required|unique:users',
             'password' => 'required',
             'password_confirm' => 'required|same:password',
         ]);
@@ -47,7 +47,10 @@ class UserController extends Controller
             'username' => 'required',
             'password' => 'required',
         ]);
-        if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
+        if (Auth::attempt($request->only([
+            'username',
+            'password'
+        ]))) {
             $request->session()->regenerate();
             return redirect()->intended('/');
         }

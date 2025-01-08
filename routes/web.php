@@ -1,17 +1,15 @@
 <?php
 
-use App\Http\Middleware\EnsureUserIsAuthenticated;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\LoginController; 
 use App\Http\Controllers\UserController; 
 use App\Http\Controllers\ProductController;
+use Illuminate\Support\Facades\Route;
+
 
 
 Route::get('/', function () {
     return view('home', ['title' => 'Home']);
 })->name('home');
 
-Auth::routes();
 
 
 Route::get('register', [UserController::class, 'register'])->name('register');
@@ -23,7 +21,7 @@ Route::post('password', [UserController::class, 'password_action'])->name('passw
 Route::get('logout', [UserController::class, 'logout'])->name('logout');
 
 Route::group(['middleware' => ['auth']], function() {
-    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index') -> middleware(['permission:product_view']);
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('products', [ProductController::class, 'store'])->name('products.store');
     Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\UserRole;
+use App\Models\User_Role;
 use Illuminate\Http\Request;
+
 
 class UserRoleController extends Controller {
     public function index() {
-        $roles = UserRole::all();
+        $roles = User_Role::all();
         return view('user_roles.index', compact('roles'));
     }
 
@@ -20,16 +21,16 @@ class UserRoleController extends Controller {
             'name' => 'required|string|max:255',
         ]);
 
-        UserRole::create($calidated);
+        User_Role::create($validated);
 
-        return redirect()->route('user_roles.index'->with('success', 'Role created successfully.'));
+        return redirect()->route('user_roles.index')->with('success', 'Role created successfully.');
     }
 
-    public function edit(UserRole $userRole) {
+    public function edit(User_Role $userRole) {
         return view('user_roles.edit', compact('userRole'));
     }
 
-    public function update(Request $request, UserRole $userRole) {
+    public function update(Request $request, User_Role $userRole) {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
         ]);
@@ -39,7 +40,7 @@ class UserRoleController extends Controller {
         return redirect()->route('user_roles.index')->with('success', 'ROle updated successfully.');
     }
     
-    public function destroy(UserRole $userRole) {
+    public function destroy(User_Role $userRole) {
         $userRole->delete();
 
         return redirect()->route('user_roles.index')->with('success', 'ROle deleted successfully.');
