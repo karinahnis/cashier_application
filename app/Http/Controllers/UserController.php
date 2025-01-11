@@ -6,13 +6,16 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
     public function register()
     {
         $data['title'] = 'Register';
-        return view('users/register', $data);
+        $title = 'Register';
+        $roles = Role::all();
+        return view('users/register', compact('roles','data','title'));
     }
 
     public function register_action(Request $request)
@@ -29,6 +32,8 @@ class UserController extends Controller
             'username' => $request->username,
             'password' => Hash::make($request->password),
         ]);
+
+        $user->assignRole($request->user_role);
         $user->save();
 
         return redirect()->route('login')->with('success', 'Registration success. Please login!');
