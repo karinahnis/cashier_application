@@ -10,12 +10,19 @@ use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
+    // Fungsi register
     public function register()
     {
-        $data['title'] = 'Register';
+        // Nyimpen data dlm array asosiatif(mengumpulkan bbrp data sebelum dikirim ke view)
+        // nama[key] = value  
+        $roles = [
+            (object) ['name' => 'admin'],
+            (object) ['name' => 'user'],            
+        ];
         $title = 'Register';
-        $roles = Role::all();
-        return view('users/register', compact('roles','data','title'));
+        // ngambil semua data dari tabel roles di db
+        // Ngarahin ke view dan ngirim data dari controller ke view
+        return view('users/register', compact('roles','title'));
     }
 
     public function register_action(Request $request)
@@ -25,6 +32,7 @@ class UserController extends Controller
             'username' => 'required|unique:users',
             'password' => 'required',
             'password_confirm' => 'required|same:password',
+            'user_role' => 'required|in:admin, user', 
         ]);
 
         $user = new User([
@@ -32,11 +40,18 @@ class UserController extends Controller
             'username' => $request->username,
             'password' => Hash::make($request->password),
         ]);
-
-        $user->assignRole($request->user_role);
+        
+        // Tetapkan role ke pengguna
+        $user->assignRole(roles: $request->user_role);
         $user->save();
 
-        return redirect()->route('login')->with('success', 'Registration success. Please login!');
+        //  Arahkan pengguna sesuai role
+        Auth::login($user);
+
+        if ($user->hasRole('admin')) {
+            return redirect()->route('dashboard.admin');
+        }
+        return redirect()->route('dashboard.User');
     }
 
 
@@ -52,14 +67,20 @@ class UserController extends Controller
             'username' => 'required',
             'password' => 'required',
         ]);
-        if (Auth::attempt($request->only([
-            'username',
-            'password'
-        ]))) {
+        
+         // Auth attempt
+        if (Auth::attempt($request->only(['username', 'password']))) {
             $request->session()->regenerate();
-            return redirect()->intended('/');
+    
+            // Periksa role pengguna dan arahkan berdasarkan role
+            if (Auth::user()->hasRole('admin')) {
+                return redirect()->route('dashboard.admin');
+            }
+    
+            return redirect()->route('dashboard.User');
         }
-
+    
+        // Jika login gagal
         return back()->withErrors([
             'password' => 'Wrong username or password',
         ]);
@@ -90,5 +111,10 @@ class UserController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/');
+    }
+
+    public function user_dashboard() {
+        $title = 'User Dashboard';
+        return view('dashboard.user', compact('title')); 
     }
 }

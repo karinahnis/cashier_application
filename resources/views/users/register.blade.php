@@ -24,18 +24,16 @@
             <div class="mb-3">
                 <label>Password Confirmation<span class="text-danger">*</span></label>
                 <input class="form-control" type="password" name="password_confirm" />
-            </div>
+            </div> 
             <div class="form-group">
-            <label for="user_role">User Roles</label>
-            <select name="user_role" id="user_role" class="form-control" required>
+                <label for="user_role">User Roles</label>
+                <select name="user_role" id="user_role" class="form-control" required>
                 <option value="">Select role</option>
-                @foreach($roles as $role)
-                    <option value="{{ $role->name }}" >
-                        {{ $role->name }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
+                    @foreach($roles as $role)
+                       <option value="{{ $role->name }}">{{ ucfirst($role->name)}} </option> 
+                    @endforeach
+                </select>
+            </div>
             <div class="mb-3">
                 <button class="btn btn-primary">Register</button>
                 <a class="btn btn-danger" href="{{ route('home') }}">Back</a>

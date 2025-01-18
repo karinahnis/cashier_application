@@ -14,6 +14,7 @@ class Role_permission_seeder extends Seeder
      */
     public function run(): void
     {
+        
         Permission::create(attributes: ['name' => 'product_view', 'guard_name' => 'web']);
         $this->createUsers();
     }

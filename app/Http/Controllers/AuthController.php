@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth; // Add this to import the Auth facade
+use Illuminate\Support\Facades\Auth;
+ // Add this to import the Auth facade
 
 class AuthController extends Controller
 {
