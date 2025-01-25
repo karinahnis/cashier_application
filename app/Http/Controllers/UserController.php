@@ -32,7 +32,7 @@ class UserController extends Controller
             'username' => 'required|unique:users',
             'password' => 'required',
             'password_confirm' => 'required|same:password',
-            'user_role' => 'required|in:admin, user', 
+            'user_role' => 'required|in:admin,user', 
         ]);
 
         $user = new User([
@@ -47,12 +47,9 @@ class UserController extends Controller
 
         //  Arahkan pengguna sesuai role
         Auth::login($user);
-
-        if ($user->hasRole('admin')) {
-            return redirect()->route('dashboard.admin');
-        }
-        return redirect()->route('dashboard.User');
+        return redirect()->route('login')->with('success','berhasil');
     }
+    
 
 
     public function login()
@@ -76,8 +73,7 @@ class UserController extends Controller
             if (Auth::user()->hasRole('admin')) {
                 return redirect()->route('dashboard.admin');
             }
-    
-            return redirect()->route('dashboard.User');
+            return redirect()->route('dashboard.user');
         }
     
         // Jika login gagal

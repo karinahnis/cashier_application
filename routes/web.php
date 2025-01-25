@@ -25,7 +25,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/dashboard/Admin', [AdminController::class,'index'])->name('dashboard.admin');
 
     // Dashboard User
-    Route::get('/dashboard/user', [UserController::class,'user_dashboard'])->name('dashboard.User');
+    Route::get('/dashboard/user', [UserController::class,'user_dashboard'])->name('dashboard.user');
 
     // Products Routes
     Route::get('/products', [ProductController::class, 'index'])->name('products.index') -> middleware(['permission:product_view']);

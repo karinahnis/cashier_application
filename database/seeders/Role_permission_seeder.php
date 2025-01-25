@@ -19,14 +19,4 @@ class Role_permission_seeder extends Seeder
         $this->createUsers();
     }
 
-    private function createUsers(): void 
-    {
-        Role::create(['name' => 'admin', 'guard_name' => 'web']) -> givePermissionTo(Permission::all());
-        $admin = User::create([
-            'username' => 'admin',
-            'name' => 'admin',
-            'password' => 'ica',
-        ]);
-        $admin->assignRole('admin');
-    }
-}
+    
