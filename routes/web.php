@@ -18,7 +18,6 @@ Route::get('password', [UserController::class, 'password'])->name('password');
 Route::post('password', [UserController::class, 'password_action'])->name('password.action');
 Route::post('logout', [UserController::class, 'logout'])->name('logout');
 
-    
 
 Route::group(['middleware' => ['auth']], function() {
     // Dashboard Admin
@@ -35,6 +34,5 @@ Route::group(['middleware' => ['auth']], function() {
     Route::put('/products/{products}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{products}', [ProductController::class, 'destroy'])->name('products.destroy');
 });
-
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
