@@ -2,8 +2,8 @@
 
 @section('content')
 <div class="container">
-    <h1>Products</h1>
-    <a href="{{ route('categories.create') }}" class="btn btn-primary">Create Product</a>
+    <h1>Kategori</h1>
+    <a href="{{ route('categories.create') }}" class="btn btn-primary">Create Category</a>
     <table class="table">
         <thead>
             <tr>

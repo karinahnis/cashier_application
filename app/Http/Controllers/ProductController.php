@@ -12,6 +12,7 @@ class ProductController extends Controller {
          return view('product.index', compact('products'));
     }
 
+
     public function create() {
         $categories = Category::all();
         return view('product.create', compact('categories'));
@@ -46,7 +47,7 @@ class ProductController extends Controller {
         $product->update($validated);
         return redirect()->route('products.index')->with('success', 'Product update successfully.');
     }
-
+    
     public function destroy(Product $product) {
         $product->delete();
 

@@ -21,7 +21,7 @@ class CategoryController extends Controller {
             'name' => 'required|string|max:255',
         ]);
 
-        category::create($validated);
+        Category::create($validated);
 
         return redirect()->route('categories.index')->with('success', 'category created successfully.');
     }
@@ -39,7 +39,6 @@ class CategoryController extends Controller {
 
         return redirect()->route('categories.index')->with('success', 'Category update successfully.');
     }
-
     public function destroy(Category $category) {
         $category->delete();
 

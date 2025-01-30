@@ -45,7 +45,6 @@
             <label for="stock_available">Stock Available</label>
             <input type="number" name="stock_available" id="stock_available" class="form-control" value="{{ old('stock_available', $product->stock_available) }}" required>
         </div>
-
         <button type="submit" class="btn btn-primary">Update Product</button>
     </form>
 </div>
