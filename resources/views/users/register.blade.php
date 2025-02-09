@@ -1,7 +1,28 @@
-@extends('app')
-@section('content')
-<div class="row">
-    <div class="col-md-6">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="	https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+
+</head>
+
+<style>
+    .row {
+        height : 100vh;
+        box-sizing : border-box;
+    }
+
+    .register-box {
+        width: 500px;
+        border: solid 3px;
+    }
+</style>
+<body>
+    
+<div class="row d-flex p-10 justify-content-center align-items-center">
+    <div class="register-box">
         @if($errors->any())
         @foreach($errors->all() as $err)
         <p class="alert alert-danger">{{ $err }}</p>
@@ -9,23 +30,23 @@
         @endif
         <form action="{{ route('register.action') }}" method="POST">
             @csrf
-            <div class="mb-3">
+            <div>
                 <label>Name <span class="text-danger">*</span></label>
                 <input class="form-control" type="text" name="name" value="{{ old('name') }}" />
             </div>
-            <div class="mb-3">
+            <div >
                 <label>Username <span class="text-danger">*</span></label>
                 <input class="form-control" type="text" name="username" value="{{ old('username') }}" />
             </div>
-            <div class="mb-3">
+            <div >
                 <label>Password <span class="text-danger">*</span></label>
                 <input class="form-control" type="password" name="password" />
             </div>
-            <div class="mb-3">
+            <div >
                 <label>Password Confirmation<span class="text-danger">*</span></label>
                 <input class="form-control" type="password" name="password_confirm" />
             </div> 
-            <div class="form-group">
+            <div >
                 <label for="user_role">User Roles</label>
                 <select name="user_role" id="user_role" class="form-control" required>
                 <option value="">Select role</option>
@@ -40,5 +61,10 @@
             </div>
         </form>
     </div>
+
+    <script scr="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js "></script>
 </div>
-@endsection
+</body>
+</html>
+
+
