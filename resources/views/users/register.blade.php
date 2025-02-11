@@ -12,12 +12,21 @@
     .row {
         height : 100vh;
         box-sizing : border-box;
+
     }
 
     .register-box {
         width: 500px;
         border: solid 3px;
+        padding : 30px;
     }
+
+    .form div {
+        margin-bottom : 20px;
+    }
+ 
+
+
 </style>
 <body>
     
@@ -55,8 +64,8 @@
                     @endforeach
                 </select>
             </div>
-            <div class="mb-3">
-                <button class="btn btn-primary">Register</button>
+            <div class="button">
+                <button class="form-control">Register</button>
                 <a class="btn btn-danger" href="{{ route('home') }}">Back</a>
             </div>
         </form>
