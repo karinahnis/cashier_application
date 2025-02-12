@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="	https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 
 </head>
 
@@ -14,18 +14,14 @@
         box-sizing : border-box;
 
     }
-
     .register-box {
         width: 500px;
         border: solid 3px;
         padding : 30px;
     }
-
     .form div {
         margin-bottom : 20px;
     }
- 
-
 
 </style>
 <body>
@@ -45,7 +41,7 @@
             </div>
             <div >
                 <label>Username <span class="text-danger">*</span></label>
-                <input class="form-control" type="text" name="username" value="{{ old('username') }}" />
+                <input class="form-control" type="text" name="username" value="{{ old('username') }}" autocomplete="off" />
             </div>
             <div >
                 <label>Password <span class="text-danger">*</span></label>

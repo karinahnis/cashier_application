@@ -7,7 +7,7 @@ use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
   
 Route::get('/', function () {
-    return view('home', ['title' => 'Home']);
+    return view('welcome', ['title' => 'Home']);
 })->name('home');
 
 Route::get('register', action: [UserController::class, 'register'])->name('register');
