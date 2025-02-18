@@ -3,17 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
     public function register() {
-            (object) ['name' => 'admin']
-            (object) ['name' => 'user'],            
-        ];
+        $roles = [(object) ['name' => 'admin'], (object) ['name' => 'user']]; 
         $title = 'Register';
-        // ngambil semua data dari tabel roles di db
-        // Ngarahin ke view dan ngirim data dari controller ke view
-        return view('users/register', compact('roles','title'));
+
+        return view('users/register', compact('roles', 'title'));
     }
 
     public function register_action(Request $request)
@@ -31,14 +31,15 @@ class RegisterController extends Controller
             'username' => $request->username,
             'password' => Hash::make($request->password),
         ]);
-        
-        // Tetapkan role ke pengguna
-        $user->assignRole(roles: $request->user_role);
-        $user->save();
 
-        //  Arahkan pengguna sesuai role
+        $user->save();  // Save user before assigning a role
+
+        // Assign role (if using Spatie)
+        $user->assignRole($request->user_role);
+
+        // Log in the user
         Auth::login($user);
-        return redirect()->route('login')->with('success','berhasil');
+
+        return redirect()->route('dashboard')->with('success', 'Registrasi berhasil!');
     }
-    
 }

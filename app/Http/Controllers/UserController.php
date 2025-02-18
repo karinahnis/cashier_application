@@ -27,7 +27,7 @@ class UserController extends Controller
             $request->session()->regenerate();
     
             // Periksa role pengguna dan arahkan berdasarkan role
-            if (Auth::user()->hasRole('admin')) {
+            if (Auth::user()->('admin')) {
                 return redirect()->route('dashboard.admin');
             }
             return redirect()->route('dashboard.user');

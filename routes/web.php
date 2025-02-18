@@ -5,12 +5,31 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController; 
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
+use illumminate\Http\Controllers\RegisterController;
   
 Route::get('/', function () {
     return view('welcome', ['title' => 'Home']);
 })->name('home');
 
-Route::get('register', action: [UserController::class, 'register'])->name('register');
+Route::get('/a', function() {
+    return view('a', [
+        "title" => "a", 
+    ]);
+});
+
+Route::get('/b', function() {
+    return view('b', [
+        "title" => "b", 
+    ]);
+});
+
+Route::get('/c', function() {
+    return view('c', [
+        "title" => "c", 
+    ]);
+});
+
+Route::get('register', action: [RegisterController::class, 'register'])->name('register');
 Route::post('register', [UserController::class, 'register_action'])->name('register.action');
 Route::get('login', [UserController::class, 'login'])->name('login');
 Route::post('login', [UserController::class, 'login_action'])->name('login.action');
