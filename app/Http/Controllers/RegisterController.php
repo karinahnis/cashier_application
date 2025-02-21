@@ -13,33 +13,25 @@ class RegisterController extends Controller
         $roles = [(object) ['name' => 'admin'], (object) ['name' => 'user']]; 
         $title = 'Register';
 
-        return view('users/register', compact('roles', 'title'));
+        return view('register/register', compact('roles', 'title'));
     }
 
     public function register_action(Request $request)
-    {
-        $request->validate([
-            'name' => 'required',
-            'username' => 'required|unique:users',
+    { 
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'username' => 'required|unique:users|min:3|max:255',
             'password' => 'required',
-            'password_confirm' => 'required|same:password',
-            'user_role' => 'required|in:admin,user', 
+            'password-conf' => 'required|same:password',
         ]);
+        
+        $validatedData['password'] = Hash::make($validatedData['password']);
 
-        $user = new User([
-            'name' => $request->name,
-            'username' => $request->username,
-            'password' => Hash::make($request->password),
-        ]);
+        User::create($validatedData);
 
-        $user->save();  // Save user before assigning a role
+        return redirect('/login')->with('success', 'Registration successfull!');
 
-        // Assign role (if using Spatie)
-        $user->assignRole($request->user_role);
 
-        // Log in the user
-        Auth::login($user);
-
-        return redirect()->route('dashboard')->with('success', 'Registrasi berhasil!');
+        
     }
 }

@@ -4,27 +4,37 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
-    
+
 class LoginController extends Controller
 {
-    // 
-    public function authenticate(Request $request): RedirectResponse
+    public function login()
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
+        return view('login.index', [
+            'title' => 'Login'
         ]);
- 
-        if (Auth::attempt($credentials)) {
+    }
+
+    public function authenticate(Request $request) {
+        $credentials = $request->validate([
+            'username' => 'required',
+            'password' => 'required'
+        ]);
+
+        if(Auth::attempt($credentials)) {
             $request->session()->regenerate();
- 
             return redirect()->intended('/dashboard');
         }
- 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+        return back()->with('loginError', 'Login failed!');
+    }
+
+    public function password()
+    {
+        $data['title'] = 'Change Password';
+        return view('user/password', $data);
+    }
+
+    public function user_dashboard() {
+        $title = 'User Dashboard';
+        return view('dashboard.user', compact('title')); 
     }
 }
-

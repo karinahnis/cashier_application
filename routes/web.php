@@ -1,11 +1,12 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\UserController; 
+use App\Http\Controllers\LoginController; 
 use App\Http\Controllers\ProductController;
-use Illuminate\Support\Facades\Route;
-use illumminate\Http\Controllers\RegisterController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\DashboardController;
   
 Route::get('/', function () {
     return view('welcome', ['title' => 'Home']);
@@ -30,20 +31,19 @@ Route::get('/c', function() {
 });
 
 Route::get('register', action: [RegisterController::class, 'register'])->name('register');
-Route::post('register', [UserController::class, 'register_action'])->name('register.action');
-Route::get('login', [UserController::class, 'login'])->name('login');
-Route::post('login', [UserController::class, 'login_action'])->name('login.action');
-Route::get('password', [UserController::class, 'password'])->name('password');
-Route::post('password', [UserController::class, 'password_action'])->name('password.action');
-Route::post('logout', [UserController::class, 'logout'])->name('logout');
-
+Route::post('register', [RegisterController::class, 'register_action'])->name('register.action');
+Route::get('login', [LoginController::class, 'login'])->name('login');
+Route::post('login', [LoginController::class, 'authenticate'])->name('login.action');
+Route::get('password', [LoginController::class, 'password'])->name('password');
+Route::post('password', [LoginController::class, 'password_action'])->name('password.action');
+Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::group(['middleware' => ['auth']], function() {
     // Dashboard Admin
-    Route::get('/dashboard/Admin', [AdminController::class,'index'])->name('dashboard.admin');
+    Route::get('/dashboard', [DashboardController::class,'index'])->name('dashboard.admin');
 
     // Dashboard User
-    Route::get('/dashboard/user', [UserController::class,'user_dashboard'])->name('dashboard.user');
+    Route::get('/dashboard/user', [LoginController::class,'user_dashboard'])->name('dashboard.user');
 
     // Products Routes
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
@@ -53,7 +53,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::put('/products/{products}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{products}', [ProductController::class, 'destroy'])->name('products.destroy');
 
-    // Products Kategori
+    // Categories Routes
     Route::get('/categories', [CategoryController::class,'index'])->name('categories.index');
     Route::get('/categories/create', [CategoryController::class,'create'])->name('categories.create');
     Route::post('/categories', [CategoryController::class,'store'])->name('categories.store');
@@ -62,4 +62,3 @@ Route::group(['middleware' => ['auth']], function() {
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 });
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
