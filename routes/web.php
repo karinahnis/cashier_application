@@ -32,7 +32,7 @@ Route::get('/c', function() {
 
 Route::get('register', action: [RegisterController::class, 'register'])->name('register');
 Route::post('register', [RegisterController::class, 'register_action'])->name('register.action');
-Route::get('login', [LoginController::class, 'login'])->name('login');
+Route::get('login', [LoginController::class, 'login'])->name('login')->middleware('guest');
 Route::post('login', [LoginController::class, 'authenticate'])->name('login.action');
 Route::get('password', [LoginController::class, 'password'])->name('password');
 Route::post('password', [LoginController::class, 'password_action'])->name('password.action');
