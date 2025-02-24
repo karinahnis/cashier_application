@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LoginController; 
 use App\Http\Controllers\ProductController;
@@ -30,7 +29,7 @@ Route::get('/c', function() {
     ]);
 });
 
-Route::get('register', action: [RegisterController::class, 'register'])->name('register');
+Route::get('register', action: [RegisterController::class, 'register'])->name('register')->middleware('guest');
 Route::post('register', [RegisterController::class, 'register_action'])->name('register.action');
 Route::get('login', [LoginController::class, 'login'])->name('login')->middleware('guest');
 Route::post('login', [LoginController::class, 'authenticate'])->name('login.action');
@@ -40,7 +39,7 @@ Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::group(['middleware' => ['auth']], function() {
     // Dashboard Admin
-    Route::get('/dashboard', [DashboardController::class,'index'])->name('dashboard.admin');
+    Route::get('/dashboard', [DashboardController::class,'index'])->name('dashboard.admin')->middleware('auth');
 
     // Dashboard User
     Route::get('/dashboard/user', [LoginController::class,'user_dashboard'])->name('dashboard.user');

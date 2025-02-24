@@ -37,4 +37,14 @@ class LoginController extends Controller
         $title = 'User Dashboard';
         return view('dashboard.user', compact('title')); 
     }
+
+    public function logout(Request $request) {
+        Auth::logout();
+        
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/');
+    }
 }
